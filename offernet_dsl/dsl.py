@@ -1,9 +1,16 @@
-import datetime
-from on import *
+#
+# offernet_dsl/dsl.py - unit test for the app.
+#
+# Copyright (c) 2018 SingularityNET
+#
+# Distributed under the MIT software license, see LICENSE file.
+#
+
 from gremlin_python.process.traversal import (Bytecode, P, Scope, Order, Column, T)
 from gremlin_python.process.graph_traversal import (GraphTraversalSource, GraphTraversal)
 from gremlin_python.process.graph_traversal import __ as AnonymousTraversal
-from aenum import Enum
+import uuid
+from offernet_dsl.on import *
 
 V = AnonymousTraversal.V
 addV = AnonymousTraversal.addV
@@ -24,22 +31,19 @@ keys = Column.keys
 class OfferNetTraversal(GraphTraversal):
     """The OfferNet Traversal class which exposes the available steps of the DSL."""
 
-    def id(self):
-        """Returns and id of an agent vertex"""
-        return self.id().next()
-
-    def knows_agent(self, agent_id):
-        self.addEdge('knows', OfferNetTraversalSource.agent(agent_id))
+    def knows_agent(self, to_agent):
+        self.addE('knows').to(to_agent)
 
     # finished here...
 
 class __(AnonymousTraversal):
     """Spawns anonymous OfferNetTraversal instances for the DSL."""
 
-    graph_traversal=OfferNetTraversal
+    graph_traversal = OfferNetTraversal
 
     @classmethod
-    def
+    def agent(cls, *args):
+        return cls.graph_traversal(None, None, Bytecode().agent(*args))
 
 class OfferNetTraversalSource(GraphTraversalSource):
     """
@@ -51,7 +55,13 @@ class OfferNetTraversalSource(GraphTraversalSource):
         super(OfferNetTraversalSource, self).__init__(*args, **kwargs)
         self.graph_traversal = OfferNetTraversal  # tells the "source" the type of Traversal to spawn
 
-    def agent(self,agent_id):
-        traversal = self.get_graph_traversal().V(agent_id)
+    def new_agent(self):
+        """Creates a new agent and returns it"""
+
+        traversal = self.get_graph_traversal().V().addV(VERTEX_AGENT).property(KEY_AGENT_ID, str(uuid.uuid4()))
         return traversal
 
+    def agent(self, agent_id):
+        """Gets an agent by the id (not sure this is needed in decentralized system) !!!"""
+        traversal = self.get_graph_traversal().V().has(VERTEX_AGENT, KEY_AGENT_ID, agent_id)
+        return traversal

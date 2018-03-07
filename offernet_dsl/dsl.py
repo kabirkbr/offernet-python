@@ -55,7 +55,7 @@ class OfferNetTraversalSource(GraphTraversalSource):
         super(OfferNetTraversalSource, self).__init__(*args, **kwargs)
         self.graph_traversal = OfferNetTraversal  # tells the "source" the type of Traversal to spawn
 
-    def new_agent(self):
+    def create_agent(self):
         """Creates a new agent and returns it"""
 
         traversal = self.get_graph_traversal().addV(VERTEX_AGENT).property(VERTEX_TYPE, VERTEX_AGENT).property(KEY_AGENT_ID, str(uuid.uuid4()))

@@ -58,10 +58,10 @@ class OfferNetTraversalSource(GraphTraversalSource):
     def new_agent(self):
         """Creates a new agent and returns it"""
 
-        traversal = self.get_graph_traversal().V().addV(VERTEX_AGENT).property(KEY_AGENT_ID, str(uuid.uuid4()))
+        traversal = self.get_graph_traversal().addV(VERTEX_AGENT).property(VERTEX_TYPE, VERTEX_AGENT).property(KEY_AGENT_ID, str(uuid.uuid4()))
         return traversal
 
     def agent(self, agent_id):
         """Gets an agent by the id (not sure this is needed in decentralized system) !!!"""
-        traversal = self.get_graph_traversal().V().has(VERTEX_AGENT, KEY_AGENT_ID, agent_id)
+        traversal = self.get_graph_traversal().V().has(KEY_AGENT_ID, agent_id)
         return traversal

@@ -31,8 +31,11 @@ keys = Column.keys
 class OfferNetTraversal(GraphTraversal):
     """The OfferNet Traversal class which exposes the available steps of the DSL."""
 
-    def knows_agent(self, to_agent):
-        self.addE('knows').to(to_agent)
+    def knows(self, to_agent):
+        #to_agent = self.get_graph_traversal().V().has(KEY_AGENT_ID, to_agentId)
+        #print('to_agent: ', to_agent)
+        traversal = self.addE('knows').to(to_agent)
+        return traversal
 
     # finished here...
 

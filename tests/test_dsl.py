@@ -19,8 +19,14 @@ log = logging.getLogger(__name__)
 on = Graph().traversal(OfferNetTraversalSource).withRemote(DriverRemoteConnection('ws://localhost:8182/gremlin', 'g'))
 
 #tests for OfferNetTraversal
-def test_knows_agent():
-
+def test_knows():
+    a1 = on.create_agent().properties(KEY_AGENT_ID).value().next()
+    print('agent1: ',a1)
+    a2 = on.create_agent().properties(KEY_AGENT_ID).value().next()
+    print('agent2: ', a2)
+    edge = on.agent(a1).knows(on.agent(a2)).next()
+    print('edge: ', edge)
+    assert edge is not None
 
 # tests for OfferNetTraversalSource
 def test_create_agent():

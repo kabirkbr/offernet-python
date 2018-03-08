@@ -17,6 +17,7 @@ log = logging.getLogger(__name__)
 graph = Graph()
 g = graph.traversal().withRemote(DriverRemoteConnection('ws://localhost:8182/gremlin', 'g'))
 
+@pytest.mark.first
 def test_connection():
     identity = random.randint(1, 1001)
 

@@ -12,5 +12,6 @@ from offernet_dsl.on import *
 
 log = logging.getLogger(__name__)
 
+@pytest.mark.first
 def test_init():
     init()

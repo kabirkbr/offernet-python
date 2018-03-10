@@ -75,7 +75,6 @@ def test_all_works():
     for work in works:
         assert work == VERTEX_WORK
 
-
 def test_demands():
     w1 = on.create_work()
     i1 = on.create_item()
@@ -89,3 +88,27 @@ def test_offers():
     offersEdge = w1.offers(i1)
     print('Created offers edge: ', offersEdge)
     assert offersEdge.label().next() == EDGE_OFFERS
+
+def test_agent_items():
+    a1id = on.create_agent().properties(KEY_AGENT_ID).value().next()
+    w1 = on.create_work()
+    w2 = on.create_work()
+    on.agent(a1id).owns_work(w1).next()
+    on.agent(a1id).owns_work(w2).next()
+
+    on.agent(a1id).all_works().demands(on.create_item()).next()
+    on.agent(a1id).all_works().offers(on.create_item()).next()
+
+    print('query', on.agent(a1id).agent_items().next())
+
+    assert on.agent(a1id).agent_items().count().next() == 4
+    assert on.agent(a1id).agent_items('demands').count().next() == 2
+    assert on.agent(a1id).agent_items('offers').count().next() == 2
+
+
+def test_work_items():
+    w1 = on.create_work()
+    i1 = on.create_item()
+    demandsEdge = w1.demands(i1)
+    print('Created demands edge: ', demandsEdge)
+    assert demandsEdge.label().next() == EDGE_DEMANDS

@@ -55,10 +55,35 @@ class OfferNetTraversal(GraphTraversal):
 
     def offers(self, item):
         """Adds existing item to a work vertex as an offer"""
-
         traversal = self.addE(EDGE_OFFERS).to(item)
         return traversal
 
+    def agent_items(self, which='all'):
+        """Gets items of the works of an agent"""
+
+        traversal = self.outE(EDGE_OWNS).inV().has(VERTEX_TYPE, VERTEX_WORK)
+
+        if which == 'all':
+            traversal = traversal.outE().inV().has(VERTEX_TYPE, VERTEX_ITEM)
+        elif which == 'demands':
+            traversal = traversal.outE(EDGE_DEMANDS).inV().has(VERTEX_TYPE, VERTEX_ITEM)
+        elif which == 'offers':
+            traversal = traversal.outE(EDGE_OFFERS).inV().has(VERTEX_TYPE, VERTEX_ITEM)
+
+        return traversal
+
+    def work_items(self, which='all'):
+        """Gets items of a work"""
+        traversal = self
+
+        if which == 'all':
+            traversal = traversal.outE().inV().has(VERTEX_TYPE, VERTEX_ITEM)
+        elif which == 'demands':
+            traversal = traversal.outE(EDGE_DEMANDS).inV().has(VERTEX_TYPE, VERTEX_ITEM)
+        elif which == 'offers':
+            traversal = traversal.outE(EDGE_OFFERS).inV().has(VERTEX_TYPE, VERTEX_ITEM)
+
+        return traversal
 
 class __(AnonymousTraversal):
     """Spawns anonymous OfferNetTraversal instances for the DSL."""

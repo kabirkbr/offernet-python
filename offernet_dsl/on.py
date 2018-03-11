@@ -10,31 +10,16 @@ from gremlin_python.driver.client import Client
 from gremlin_python.structure.graph import Graph
 from gremlin_python.driver.driver_remote_connection import DriverRemoteConnection
 from offernet_dsl.dsl import *
+from offernet_dsl.ns import *
 import time
+import random
 
-VERTEX_TYPE='type'
-VERTEX_AGENT='agent'
-VERTEX_WORK='work'
-VERTEX_ITEM='item'
 
-EDGE_KNOWS='knows'
-EDGE_OWNS='owns'
-EDGE_SIMILAR='similar'
-EDGE_OFFERS='offers'
-EDGE_DEMANDS='demands'
-
-KEY_AGENT_ID='agentId'
-KEY_WORK_ID='workId'
-KEY_ITEM_ID='itemId'
-KEY_ITEM_VALUE="value"
-
-ITEM_VECTOR_LENGTH=16
+client = Client('ws://localhost:8182/gremlin', 'g')
+rc = DriverRemoteConnection('ws://localhost:8182/gremlin', 'g')
+on = Graph().traversal(OfferNetTraversalSource).withRemote(rc)
 
 def init():
-    client = Client('ws://localhost:8182/gremlin', 'g')
-    rc = DriverRemoteConnection('ws://localhost:8182/gremlin', 'g')
-    on = Graph().traversal().withRemote(rc)
-
     make_keys_msg = f"""graph.tx().rollback()
                     mgmt = graph.openManagement()
                     
@@ -103,3 +88,21 @@ def init():
 
     if len(on.V().has('type', 'GlobalOfferNetProperties').toList()) is 0:
         on.addV('GlobalOfferNetProperties').property('type', 'GlobalOfferNetProperties').next()
+
+def add_random_agent():
+
+    new_agent = on.create_agent()
+    random_agent = get_random_agent()
+
+    if random_agent is None:
+        random_agent = on.create_agent()
+
+    random_agent.knows(new_agent).next()
+    return random_agent
+
+
+def get_random_agent():
+    """Get random agent from the network"""
+    agents = on.V().has('type', 'agent').properties(KEY_AGENT_ID).value().toList()
+    random_agent = on.agent(random.choice(agents))
+    return random_agent

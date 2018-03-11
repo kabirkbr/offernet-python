@@ -8,10 +8,22 @@
 
 import logging
 import pytest
-from offernet_dsl.on import *
+import offernet_dsl.on as on
+
 
 log = logging.getLogger(__name__)
 
 @pytest.mark.first
 def test_init():
-    init()
+    on.init()
+
+
+def test_add_random_agent():
+
+    agent = on.add_random_agent().properties(on.VERTEX_TYPE).value().next()
+    assert agent == on.VERTEX_AGENT
+
+
+def test_get_random_agent():
+    agent = on.get_random_agent().properties(on.KEY_AGENT_ID).value().next()
+    assert agent == on.VERTEX_AGENT

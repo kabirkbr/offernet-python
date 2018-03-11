@@ -10,7 +10,7 @@ from gremlin_python.process.traversal import (Bytecode, P, Scope, Order, Column,
 from gremlin_python.process.graph_traversal import (GraphTraversalSource, GraphTraversal)
 from gremlin_python.process.graph_traversal import __ as AnonymousTraversal
 import uuid
-from offernet_dsl.on import *
+from offernet_dsl.ns import *
 from offernet_dsl.utils import *
 
 V = AnonymousTraversal.V

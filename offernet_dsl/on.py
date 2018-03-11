@@ -90,15 +90,17 @@ def init():
         on.addV('GlobalOfferNetProperties').property('type', 'GlobalOfferNetProperties').next()
 
 def add_random_agent():
+    """Add an agent to the network and connect to another agent randomly -- returns newly added agents id"""
 
-    new_agent = on.create_agent()
+    new_agent_id = on.create_agent().properties(KEY_AGENT_ID).value().next()
     random_agent = get_random_agent()
 
     if random_agent is None:
         random_agent = on.create_agent()
 
+    new_agent = on.agent(new_agent_id)
     random_agent.knows(new_agent).next()
-    return random_agent
+    return new_agent_id
 
 
 def get_random_agent():

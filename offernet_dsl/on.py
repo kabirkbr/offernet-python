@@ -90,7 +90,10 @@ def init():
         on.addV('GlobalOfferNetProperties').property('type', 'GlobalOfferNetProperties').next()
 
 def add_random_agent():
-    """Add an agent to the network and connect to another agent randomly -- returns newly added agents id"""
+    """
+    Add an agent to the network and connect to another agent randomly -- returns newly added agents id
+    Returns agent id
+    """
 
     new_agent_id = on.create_agent().properties(KEY_AGENT_ID).value().next()
     random_agent = get_random_agent()
@@ -104,7 +107,30 @@ def add_random_agent():
 
 
 def get_random_agent():
-    """Get random agent from the network"""
+    """
+    Get random agent from the network
+    Returns: agent vertex
+    """
+
     agents = on.V().has('type', 'agent').properties(KEY_AGENT_ID).value().toList()
     random_agent = on.agent(random.choice(agents))
+
     return random_agent
+
+def add_random_work(agent_id):
+    """
+    Add random work to an agent (i.e. with randomly generated demand and offer)
+    Returns work id
+    """
+
+    work = on.create_work()
+    on.agent(agent_id).owns_work(work).next()
+    work_id = on.agent(agent_id).works().properties(KEY_WORK_ID).value().next()
+    item1 = on.create_item()
+    item2 = on.create_item()
+    demand = on.agent(agent_id).works(work_id).demands(item1).next()
+    print("added random demand: ", demand)
+    offer = on.agent(agent_id).works(work_id).offers(item2).next()
+    print("added random offer: ", offer)
+    return work_id
+

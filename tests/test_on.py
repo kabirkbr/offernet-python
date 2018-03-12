@@ -28,7 +28,16 @@ def test_add_random_agent():
     agent_id = on.add_random_agent()
     assert g.agent(agent_id).properties(ns.VERTEX_TYPE).value().next() == ns.VERTEX_AGENT
 
-
 def test_get_random_agent():
+
     agent = on.get_random_agent().properties(ns.VERTEX_TYPE).value().next()
     assert agent == ns.VERTEX_AGENT
+
+def test_add_random_work():
+
+    agent_id = on.add_random_agent()
+    work_id = on.add_random_work(agent_id)
+    print("added random work", work_id)
+    assert work_id in g.agent(agent_id).works(work_id).properties(ns.KEY_WORK_ID).value().toList()
+    assert g.agent(agent_id).works().has(ns.KEY_WORK_ID, work_id).work_items(ns.EDGE_DEMANDS).count().next() == 1
+    assert g.agent(agent_id).works().has(ns.KEY_WORK_ID, work_id).work_items(ns.EDGE_OFFERS).count().next() == 1

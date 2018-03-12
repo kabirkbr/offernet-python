@@ -71,7 +71,7 @@ def test_all_works():
     g.agent(a1).owns_work(w1).next()
     g.agent(a1).owns_work(w2).next()
 
-    works = g.agent(a1).all_works().properties(VERTEX_TYPE).value().toList()
+    works = g.agent(a1).works().properties(VERTEX_TYPE).value().toList()
     assert len(works) == 2
     for work in works:
         assert work == VERTEX_WORK
@@ -97,8 +97,8 @@ def test_agent_items():
     g.agent(a1id).owns_work(w1).next()
     g.agent(a1id).owns_work(w2).next()
 
-    g.agent(a1id).all_works().demands(g.create_item()).next()
-    g.agent(a1id).all_works().offers(g.create_item()).next()
+    g.agent(a1id).works().demands(g.create_item()).next()
+    g.agent(a1id).works().offers(g.create_item()).next()
 
     print('query', g.agent(a1id).agent_items().next())
 

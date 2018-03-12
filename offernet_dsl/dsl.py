@@ -43,9 +43,15 @@ class OfferNetTraversal(GraphTraversal):
         traversal = self.addE(EDGE_OWNS).to(work)
         return traversal
 
-    def all_works(self):
-        """Retrieves all works of an agent"""
-        traversal = self.out(EDGE_OWNS)
+    def works(self, work_id=''):
+        """Retrieves all works of an agent or a specific work by Id, if id is given"""
+
+        traversal = self
+        if work_id == '':
+            traversal = traversal.out(EDGE_OWNS)
+        else:
+            traversal = traversal.out(EDGE_OWNS).has(KEY_WORK_ID, work_id)
+
         return traversal
 
     def demands(self, item):

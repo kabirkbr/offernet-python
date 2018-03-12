@@ -41,3 +41,6 @@ def test_add_random_work():
     assert work_id in g.agent(agent_id).works(work_id).properties(ns.KEY_WORK_ID).value().toList()
     assert g.agent(agent_id).works().has(ns.KEY_WORK_ID, work_id).work_items(ns.EDGE_DEMANDS).count().next() == 1
     assert g.agent(agent_id).works().has(ns.KEY_WORK_ID, work_id).work_items(ns.EDGE_OFFERS).count().next() == 1
+
+def test_add_chain():
+    """Test chain"""

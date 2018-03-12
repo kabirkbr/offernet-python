@@ -134,3 +134,6 @@ def add_random_work(agent_id):
     print("added random offer: ", offer)
     return work_id
 
+def add_chain():
+    """Adds a chain to the network so that"""
+

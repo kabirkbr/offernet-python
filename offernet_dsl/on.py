@@ -11,6 +11,7 @@ from gremlin_python.structure.graph import Graph
 from gremlin_python.driver.driver_remote_connection import DriverRemoteConnection
 from offernet_dsl.dsl import *
 from offernet_dsl.ns import *
+import offernet_dsl.utils as utils
 import time
 import random
 
@@ -134,6 +135,20 @@ def add_random_work(agent_id):
     print("added random offer: ", offer)
     return work_id
 
-def add_chain():
+def add_chain(length):
     """Adds a chain to the network so that"""
+    chained_works = []
+    chain = utils.generate_chain(length)
+    for i in range(len(chain)-1):
+        agent_id = get_random_agent().properties(ns.KEY_AGENT_ID).value().next()
+        work_id = on.create_work().properties(ns.KEY_WORK_ID).value().next()
+        on.agent(agent_id).owns_work(on.work(work_id)).next()
+        item1 = on.create_item(chain[i])
+        on.agent(agent_id).works(work_id).demands(item1).next()
+        item2 = on.create_item(chain[i+1])
+        on.agent(agent_id).works(work_id).offers(item2).next()
+        chained_works.append(work_id)
+
+    return chained_works
+
 

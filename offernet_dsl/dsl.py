@@ -84,10 +84,10 @@ class OfferNetTraversal(GraphTraversal):
 
         if which == 'all':
             traversal = traversal.outE().inV().has(VERTEX_TYPE, VERTEX_ITEM)
-        elif which == 'demands':
-            traversal = traversal.outE(EDGE_DEMANDS).inV().has(VERTEX_TYPE, VERTEX_ITEM)
-        elif which == 'offers':
-            traversal = traversal.outE(EDGE_OFFERS).inV().has(VERTEX_TYPE, VERTEX_ITEM)
+        elif which == ns.EDGE_DEMANDS:
+            traversal = traversal.outE(ns.EDGE_DEMANDS).inV().has(VERTEX_TYPE, VERTEX_ITEM)
+        elif which == ns.EDGE_OFFERS:
+            traversal = traversal.outE(ns.EDGE_OFFERS).inV().has(VERTEX_TYPE, VERTEX_ITEM)
 
         return traversal
 

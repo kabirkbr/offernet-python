@@ -121,6 +121,11 @@ class OfferNetTraversalSource(GraphTraversalSource):
         traversal = self.get_graph_traversal().V().has(KEY_AGENT_ID, agent_id)
         return traversal
 
+    def work(self, work_id):
+        """Gets work directly from the graph -- only for testing purposes"""
+        traversal = self.get_graph_traversal().V().has(VERTEX_TYPE, VERTEX_WORK).has(KEY_WORK_ID, work_id)
+        return traversal
+
     def create_work(self):
         """Creates new work and returns it"""
         traversal = self.get_graph_traversal().addV(VERTEX_WORK).property(VERTEX_TYPE, VERTEX_WORK).property(

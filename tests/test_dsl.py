@@ -41,6 +41,11 @@ def test_agent():
     a2 = g.agent(a1).properties(KEY_AGENT_ID).value().next()
     assert a1 == a2
 
+def test_work():
+    work_id = g.create_work().properties(KEY_WORK_ID).value().next()
+    print('created work: ', work_id)
+    assert g.work(work_id).properties(VERTEX_TYPE).value().next() == VERTEX_WORK
+
 def test_create_work():
     w1 = g.create_work().properties(VERTEX_TYPE).value().next()
     print('created work: ', w1)

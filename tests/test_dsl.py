@@ -113,8 +113,13 @@ def test_agent_items():
 
 
 def test_work_items():
-    w1 = g.create_work()
-    i1 = g.create_item()
-    demandsEdge = w1.demands(i1)
-    print('Created demands edge: ', demandsEdge)
-    assert demandsEdge.label().next() == EDGE_DEMANDS
+    a1id = g.create_agent().properties(KEY_AGENT_ID).value().next()
+    w1id = g.create_work().properties(KEY_WORK_ID).value().next()
+    g.agent(a1id).owns_work(g.work(w1id)).next()
+
+    g.agent(a1id).works().demands(g.create_item()).next()
+    g.agent(a1id).works().offers(g.create_item()).next()
+
+    assert g.work(w1id).work_items().count().next() == 2
+    assert g.work(w1id).work_items(ns.EDGE_DEMANDS).count().next() == 1
+    assert g.work(w1id).work_items(ns.EDGE_OFFERS).count().next() == 1

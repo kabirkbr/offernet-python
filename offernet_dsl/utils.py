@@ -20,5 +20,7 @@ def generate_chain(length):
     for i in range(length):
         chain.append(binary_array(ns.ITEM_VECTOR_LENGTH))
 
+    chain.append(chain[0])
+    print("generated chain: ", chain)
     return chain
 

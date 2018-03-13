@@ -18,7 +18,6 @@ def test_binary_array(length = ns.ITEM_VECTOR_LENGTH):
 def test_generate_chain():
     chain = generate_chain(5)
     print('generated chain: ', chain)
-    assert len(chain) == 5
+    assert len(chain) == 5+1
+    assert chain[-1] == chain[0]
 
-def test_add_chain():
-    assert 1 == 0 # write test

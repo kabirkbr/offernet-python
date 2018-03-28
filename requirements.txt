@@ -3,3 +3,4 @@ gremlinpython==3.2.6
 pytest
 pytest-ordering
 numpy
+gremlinpy
